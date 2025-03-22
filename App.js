@@ -6,6 +6,7 @@
 
 // import LoginScreen from "./Screens/LoginScreen";
 // import HomeScreen from "./Screens/HomeScreen";
+// import RegisterScreen from "./Screens/RegisterScreen"; // Agrega RegisterScreen aquí
 
 // const Stack = createStackNavigator();
 
@@ -25,14 +26,20 @@
 //     <NavigationContainer>
 //       <Stack.Navigator>
 //         {user ? (
+//           // Si el usuario está autenticado, navega a Home
 //           <Stack.Screen name="Home" component={HomeScreen} />
 //         ) : (
-//           <Stack.Screen name="Login" component={LoginScreen} />
+//           <>
+//             {/* Si el usuario no está autenticado, muestra las pantallas de Login y Register */}
+//             <Stack.Screen name="Login" component={LoginScreen} />
+//             <Stack.Screen name="Register" component={RegisterScreen} />
+//           </>
 //         )}
 //       </Stack.Navigator>
 //     </NavigationContainer>
 //   );
 // }
+
 
 import React, { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
@@ -43,6 +50,8 @@ import { auth } from "./firebaseConfig"; // Asegúrate de importar bien
 import LoginScreen from "./Screens/LoginScreen";
 import HomeScreen from "./Screens/HomeScreen";
 import RegisterScreen from "./Screens/RegisterScreen"; // Agrega RegisterScreen aquí
+
+import Toast from "react-native-toast-message"; // Importa Toast
 
 const Stack = createStackNavigator();
 
@@ -72,6 +81,9 @@ export default function App() {
           </>
         )}
       </Stack.Navigator>
+      
+      {/* Aquí agregamos el componente Toast */}
+      <Toast />
     </NavigationContainer>
   );
 }
