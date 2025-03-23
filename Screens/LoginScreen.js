@@ -20,7 +20,7 @@ const DynamicIslandBackground = () => {
 
   return (
     <>
-    <View style={{ position: "absolute", top: 0, left: 0, width, height: 150 }}>
+    <View style={{ position: "absolute", top: 0, left: 0, width, height: 250 }}>
         <Svg width={width} height={250} viewBox={`0 0 ${width} 250`}>
             <Defs>
                 <LinearGradient id="grad" x1="0" y1="0" x2="1" y2="0">
