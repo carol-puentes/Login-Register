@@ -1,61 +1,8 @@
-// import React, { useState, useEffect } from "react";
-// import { NavigationContainer } from "@react-navigation/native";
-// import { createStackNavigator } from "@react-navigation/stack";
-// import { onAuthStateChanged } from "firebase/auth";
-// import { auth } from "./firebaseConfig"; 
-
-// import LoginScreen from "./Screens/LoginScreen";
-// import HomeScreen from "./Screens/HomeScreen";
-// import RegisterScreen from "./Screens/RegisterScreen"; 
-
-// import Toast from "react-native-toast-message"; 
-
-// // 🔹 Importar i18n para la traducción
-// import "./i18n"; 
-// import { I18nextProvider } from "react-i18next";
-// import i18n from "./i18n"; 
-
-// const Stack = createStackNavigator();
-
-// export default function App() {
-//   const [user, setUser] = useState(null);
-
-//   useEffect(() => {
-//     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-//       setUser(currentUser);
-//     });
-
-//     return () => unsubscribe(); 
-//   }, []);
-
-//   return (
-    
-//     // 🔹 Envolver la app con I18nextProvider
-//     <I18nextProvider i18n={i18n}> 
-//       <NavigationContainer>
-//         <Stack.Navigator>
-//           {user ? (
-//             <Stack.Screen name="Home" component={HomeScreen} />
-//           ) : (
-//             <>
-//               <Stack.Screen name="Login" component={LoginScreen} />
-//               <Stack.Screen name="Register" component={RegisterScreen} />
-//             </>
-//           )}
-//         </Stack.Navigator>
-
-//         {/* 🔹 Componente Toast */}
-//         <Toast />
-//       </NavigationContainer>
-//     </I18nextProvider>
-//   );
-// }
-
 import React, { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "./firebaseConfig"; 
 
 import LoginScreen from "./Screens/LoginScreen";
@@ -65,20 +12,45 @@ import HelpScreen from "./Screens/HelpScreen";
 import ProgressScreen from "./Screens/ProgressScreen";
 
 import Toast from "react-native-toast-message"; 
-import "./i18n"; 
-import { I18nextProvider } from "react-i18next";
+import { useNavigation } from "@react-navigation/native";
+import { I18nextProvider, useTranslation } from "react-i18next";
 import i18n from "./i18n"; 
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-// 🔹 Definir el BottomTabNavigator (Solo se mostrará cuando el usuario haya iniciado sesión)
+// 🔹 Definir el BottomTabNavigator con el botón de salir
 function HomeTabs() {
+  const { t } = useTranslation();
+  const navigation = useNavigation(); // Hook para obtener la navegación
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Login" }],
+      }); // Evita que el usuario vuelva atrás después de cerrar sesión
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+    }
+  };
+
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen name="Inicio" component={HomeScreen} />
       <Tab.Screen name="Ayuda" component={HelpScreen} />
       <Tab.Screen name="Progreso" component={ProgressScreen} />
+      <Tab.Screen 
+        name="Salir" 
+        component={HomeScreen} 
+        listeners={{
+          tabPress: (e) => {
+            e.preventDefault(); // Evita que navegue a otra pantalla
+            handleLogout(); // Llama a la función de cierre de sesión
+          },
+        }}
+      />
     </Tab.Navigator>
   );
 }

@@ -1,74 +1,3 @@
-// import React, { useState } from "react";
-// import { View, Text, Button, Image, TouchableOpacity, Dimensions } from "react-native";
-// import { auth } from "../firebaseConfig";
-// import { signOut } from "firebase/auth";
-// import { useTranslation } from "react-i18next";
-// import { Picker } from "@react-native-picker/picker";
-// import YoutubePlayer from "react-native-youtube-iframe";
-
-// export default function HomeScreen({ navigation }) {
-//   const { t, i18n } = useTranslation();
-//   const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
-//   const [playing, setPlaying] = useState(false);
-//   const [showVideo, setShowVideo] = useState(false);
-
-//   const screenWidth = Dimensions.get("window").width;
-//   const videoWidth = screenWidth * 0.9; // 90% del ancho de la pantalla
-//   const videoHeight = (videoWidth * 9) / 16; // Relación de aspecto 16:9
-
-//   const handleLogout = async () => {
-//     await signOut(auth);
-//     navigation.replace("Login");
-//   };
-
-//   const changeLanguage = (lang) => {
-//     i18n.changeLanguage(lang);
-//     setSelectedLanguage(lang);
-//   };
-
-//   return (
-//     <View style={{ padding: 20, alignItems: "center" }}>
-//       <Text>{t("welcome")}</Text>
-//       <Button title={t("logout")} onPress={handleLogout} />
-
-//       {!showVideo ? (
-//         <TouchableOpacity onPress={() => setShowVideo(true)} style={{ marginTop: 20 }}>
-//           <Image
-//             source={{ uri: "https://img.youtube.com/vi/AdZPmob8wtE/mqdefault.jpg" }}
-//             style={{
-//               width: videoWidth,
-//               height: videoHeight,
-//               borderRadius: 10,
-//             }}
-//           />
-//         </TouchableOpacity>
-//       ) : (
-//         <YoutubePlayer
-//           height={videoHeight}
-//           width={videoWidth}
-//           play={playing}
-//           videoId="AdZPmob8wtE"
-//           onChangeState={(event) => {
-//             if (event === "ended") setShowVideo(false);
-//           }}
-//         />
-//       )}
-
-//       <Text style={{ marginTop: 20 }}>{t("selectLanguage")}</Text>
-//       <Picker
-//         selectedValue={selectedLanguage}
-//         onValueChange={(itemValue) => changeLanguage(itemValue)}
-//         style={{ height: 50, width: 200 }}
-//       >
-//         <Picker.Item label="Español" value="es" />
-//         <Picker.Item label="English" value="en" />
-//       </Picker>
-//     </View>
-//   );
-// }
-
-
-
 import React, { useState } from "react";
 import {
   View,
@@ -95,11 +24,6 @@ export default function HomeScreen({ navigation }) {
   const [playing, setPlaying] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
 
-  const handleLogout = async () => {
-    await signOut(auth);
-    navigation.replace("Login");
-  };
-
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
     setSelectedLanguage(lang);
@@ -107,8 +31,7 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <ScrollView contentContainerStyle={{ padding: 20, flexGrow: 1 }}>
-      <Text>{t("welcome")}</Text>
-      <Button title={t("logout")} onPress={handleLogout} />
+
 
       {/* Miniatura del video */}
       {!showVideo ? (
